@@ -8,7 +8,9 @@ Config perso pour retrouver le meme setup sur n'importe quelle machine.
 |---|---|---|
 | `next-prayer.sh` | `~/Tech/layou-dev-config/next-prayer.sh` | Prochaine priere (API aladhan.com, cache quotidien) |
 | `claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline Claude Code (branche, contexte, priere) |
-| `claude/settings.json` | `~/.claude/settings.json` | Settings Claude Code |
+| `claude/settings.json` | `~/.claude/settings.json` | Settings Claude Code (statusline + hooks) |
+| `claude/notify.sh` | `~/.claude/notify.sh` | Notification Ghostty quand Claude attend une action |
+| `ghostty/config` | `~/.config/ghostty/config` | Config Ghostty (notifications desktop) |
 
 ## Setup sur une nouvelle machine
 
@@ -17,6 +19,7 @@ Config perso pour retrouver le meme setup sur n'importe quelle machine.
 - `jq` (`brew install jq` sur Mac)
 - `git`
 - `curl` (deja present sur Mac/Linux)
+- [Ghostty](https://ghostty.org/) (terminal)
 
 ### Installation
 
@@ -24,16 +27,22 @@ Config perso pour retrouver le meme setup sur n'importe quelle machine.
 # Cloner le repo
 git clone git@github.com:layogtima/layou-dev-config.git ~/Tech/layou-dev-config
 
-# Creer le dossier Claude
+# Creer les dossiers
 mkdir -p ~/.claude
+mkdir -p ~/.config/ghostty
 
 # Copier les fichiers Claude
 cp ~/Tech/layou-dev-config/claude/statusline.sh ~/.claude/statusline.sh
 cp ~/Tech/layou-dev-config/claude/settings.json ~/.claude/settings.json
+cp ~/Tech/layou-dev-config/claude/notify.sh ~/.claude/notify.sh
+
+# Copier la config Ghostty
+cp ~/Tech/layou-dev-config/ghostty/config ~/.config/ghostty/config
 
 # Rendre executables
 chmod +x ~/Tech/layou-dev-config/next-prayer.sh
 chmod +x ~/.claude/statusline.sh
+chmod +x ~/.claude/notify.sh
 ```
 
 ## Si tu changes de ville
