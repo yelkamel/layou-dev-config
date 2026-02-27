@@ -7,27 +7,25 @@ MESSAGE=$(echo "$INPUT" | jq -r '.message // "Needs your attention"')
 MESSAGE=$(echo "$MESSAGE" | sed -E 's/^Claude (Code )?//')
 
 TIME=$(date '+%H:%M')
-PROJECT=$(basename "$PWD" 2>/dev/null || echo "unknown")
+PROJECT=$(echo "$INPUT" | jq -r '.cwd // empty' | xargs basename 2>/dev/null)
+[ -z "$PROJECT" ] && PROJECT=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || echo "Claude Code")
 
 # Differentiate notification by type
 if echo "$MESSAGE" | grep -qi "permission"; then
-  TITLE="🔐 Permission"
   SOUND="mgs-alert.mp3"
   ICON="mgs-icon.png"
 elif echo "$MESSAGE" | grep -qi "approval.*plan\|plan.*approval"; then
-  TITLE="📋 Plan Ready"
   SOUND="gundam-alert.mp3"
   ICON="gundam-icon.png"
 elif echo "$MESSAGE" | grep -qi "waiting.*input\|input.*waiting"; then
-  TITLE="✅ Done"
   SOUND="naruto-alert.mp3"
   ICON="naruto-icon.jpeg"
 else
-  TITLE="⚠️ Attention"
   SOUND="mgs-alert.mp3"
   ICON="mgs-icon.png"
 fi
 
 afplay ~/.claude/sounds/$SOUND &
 
-terminal-notifier -title "$TITLE [$PROJECT]" -subtitle "$MESSAGE" -message "$TIME" -contentImage "$HOME/.claude/sounds/$ICON" -activate com.mitchellh.ghostty
+GROUP_ID="claude-$PPID"
+terminal-notifier -title "Claude [$PROJECT]" -subtitle "$MESSAGE" -message "$TIME" -contentImage "$HOME/.claude/sounds/$ICON" -activate com.mitchellh.ghostty -group "$GROUP_ID"
