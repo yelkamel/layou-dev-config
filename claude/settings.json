@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -remove claude-$PPID"
+            "command": "bash $HOME/.claude/dismiss-notif.sh"
           }
         ]
       }
